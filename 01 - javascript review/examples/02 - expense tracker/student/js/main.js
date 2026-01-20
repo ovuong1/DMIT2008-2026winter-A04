@@ -31,7 +31,7 @@ renderExpenses(theExpenses);
     
 //5. implement add/edit behavior
 document
-  .getElementById("add-expense-form")
+  .getElementById("expense-form-add")
   .addEventListener(
     "submit", // the form event im looking for
     function (event) {
@@ -75,4 +75,19 @@ document
                 renderExpenses(theExpenses); // re render data into cards 
             }
         }
-    })
+    });
+
+    // 6. implemnet live search/filtering
+    document    
+        .getElementById("searchbox")
+        .addEventListener(
+            "input",
+            function(event) {
+                const searchTerm = event.target.value.toLowerCase();
+                const filteredExpenses = theExpenses.filter(
+                    // apply a conditional expresstion to every element and return the ones that match
+                    (expense) => expense.title.toLowerCase().includes(searchTerm)
+                );
+                renderExpenses(filteredExpenses);
+            } 
+        );
