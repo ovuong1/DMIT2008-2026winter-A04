@@ -69,7 +69,7 @@ document
                     expenseToEdit.amount = amount;
                     expenseToEdit.date = date;
                     expenseToEdit.category = category;
-                    this.reset();
+                    this.reset(); // reset 
                     renderExpenses(theExpenses); // re render data into cards 
                 }
             }
