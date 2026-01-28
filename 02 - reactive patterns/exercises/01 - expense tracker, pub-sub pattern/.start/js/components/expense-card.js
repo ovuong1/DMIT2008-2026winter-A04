@@ -1,8 +1,12 @@
 class ExpenseCard extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: "open" });
+  constructor() { // things we want to happen when creating an instance of this elemnent
+    super(); // first call  the contructor from the parent class
+    this.attachShadow({ mode: "open" }); // then create a show DOM root 
+    //"open" means we can access the shadow DOM from outside the component
+    //"closed" means we cant access the shadow DOM from outside the component
 
+    // if we want we can apply the cusom styling to our component here
+    // 
     const style = document.createElement("style");
     style.textContent = `
     .card {
@@ -50,7 +54,7 @@ class ExpenseCard extends HTMLElement {
   color: white;
 }`;
 
-
+    // notice how there are no values in line here just identifiable classes/ ids 
     this.shadowRoot.innerHTML = `
       <div class="card" id="">
         <div class="header">
@@ -69,9 +73,11 @@ class ExpenseCard extends HTMLElement {
     `;
         this.shadowRoot.appendChild(style);
   }
-
-  connectedCallback() {
+  connectedCallback() { // this is a callbakc that fires first
+    // then the connectedcallback fires anytime an instance of this componect is attached to the DOM
+    // even reording a list or removing and reading the instance triggers this callback
     this.shadowRoot.querySelector(".title").textContent =
+    // kind of like a ternary operator
       this.getAttribute("title") || "No title";
     this.shadowRoot.querySelector(".category").textContent =
       "Category: " + (this.getAttribute("category") || "");
@@ -82,5 +88,5 @@ class ExpenseCard extends HTMLElement {
     this.shadowRoot.querySelector(".card").setAttribute("id", Number(this.getAttribute("id")) || new Date().getTime());
   }
 }
-
+// finally export the custom elemnet so it can be accessed natively
 customElements.define("expense-card", ExpenseCard);
