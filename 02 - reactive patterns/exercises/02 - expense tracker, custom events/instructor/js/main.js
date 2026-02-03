@@ -50,3 +50,9 @@ document.getElementById("expense-form-add").addEventListener("submit", (e) => {
         submitButton.innerText = "Add Expense";
     }
 });
+
+// Step 3: add listener to our custom delete event
+expenseContainer.addEventListener("expense-delete", (e) => {
+    const id = Number(e.detail.id);
+    console.log("Delete event received for ID:", id);
+});
