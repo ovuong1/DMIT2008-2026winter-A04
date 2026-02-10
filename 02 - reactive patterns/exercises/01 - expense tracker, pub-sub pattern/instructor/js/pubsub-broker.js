@@ -9,7 +9,8 @@ const PubSub = {
   _subscribers: {},  // store who is subscribed, and to what event, e.g. :
   // {
   //    "gets-hungry": [mouthCallback, stomachCallback, brainCallback] // presumably a stomach would be the emitter/publisher
-  // }
+
+  // }  
 
   subscribe(event, callback) {
     // register a subscriber to a given event.
@@ -40,6 +41,7 @@ const expenses = {
 
   filterExpense(input) {
     const result = this.list.filter(exp => {
+        // [exp.title, exp.category, exp.date, exp.amount.toString()].join(" ").tolowercase().includes(input.toLowerCase()
         if(exp.title.toLowerCase().includes(input.toLowerCase()) ||
            exp.category.toLowerCase().includes(input.toLowerCase()) ||
            exp.date.toLowerCase().includes(input.toLowerCase()) ||
