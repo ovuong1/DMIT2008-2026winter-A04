@@ -80,7 +80,38 @@ class ExpenseCard extends HTMLElement {
     this.shadowRoot.querySelector(".amount").textContent =
       "$" + parseFloat(this.getAttribute("amount") || 0).toFixed(2);
     this.shadowRoot.querySelector(".card").setAttribute("id", Number(this.getAttribute("id")) || new Date().getTime());
+
+
+    this.shadowRoot.querySelector(".delete-btn").addEventListener("clicked",() => {
+      const deleteEvent  = new CustomEvent(
+        "expense-delete", {
+          detail: {id: this.id},
+          bubbles: true,
+          composed: true
+        });
+      this.dispatchEvent(deleteEvent);
+    });
+
+
+    this.shadowRoot.querySelector(".edit-btn").addEventListener("clicked",() => {
+      const editEvent  = new CustomEvent(
+        "expense-edit", {
+          // im going to watnt to send more than just the id in the payload for editing exisiting titems
+          // i should be identifying the item by id but also sending the other values so the form can be populated
+          // with the existing values
+          detail: {id: this.id,
+            title: this.getAttribute("title"),
+            amount: this.getAttribute("amount"),
+            date: this.getAttribute("date"),
+            category: this.getAttribute("category"),
+          },
+          bubbles: true,
+          composed: true
+        });
+      this.dispatchEvent(editEvent);
+    });
   }
+
 }
 
 customElements.define("expense-card", ExpenseCard);

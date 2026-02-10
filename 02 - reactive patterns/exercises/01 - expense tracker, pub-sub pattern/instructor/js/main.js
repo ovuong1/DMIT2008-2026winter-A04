@@ -33,6 +33,7 @@ document.getElementById("expense-form-add").addEventListener("submit", (e) => {
     const category = document.getElementById("category").value;
     const date = document.getElementById("date").value;
     const amount = document.getElementById("amount").value;
+    
     if(title && category && date && amount) {
         expenses.addExpense({title, category, date, amount});
         e.target.reset();
