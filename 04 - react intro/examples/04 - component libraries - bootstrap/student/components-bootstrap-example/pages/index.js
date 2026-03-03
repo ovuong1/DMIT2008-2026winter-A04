@@ -1,7 +1,13 @@
 import Head from "next/head";
+import ComponentLibraries from "./api/components/ComponentsLibraries";
+// bootstrap components
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
+import Buttton from 'react-bootstrap/Button';
 
-
+// our components
 
 export default function Home() {
   return (
@@ -12,9 +18,18 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-        <main>
-
-        </main>
+      <main>
+        <Container>
+          <h1>Here's a Bootstrap example</h1>
+          <Row>
+            <Col>
+              <h4>Available component libraries</h4>
+              <ComponentLibraries/>
+              <Buttton variant="primary">A Bootstrap Button</Buttton>
+            </Col>
+          </Row>
+        </Container>
+      </main>
     </>
   );
 }
