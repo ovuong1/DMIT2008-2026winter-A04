@@ -1,3 +1,4 @@
+import { useState } from 'react';
 
 // MUI components
 import Box from '@mui/material/Box';
@@ -10,7 +11,20 @@ import Typography from '@mui/material/Typography';
 
 export default function TodoList() {
 
+  /* [stateVariable, stateVariableSetter] = useState(defaultValue)
+
+      [variable, function] -> think [noun, verb]
+
+      The setter is the *only* thing allowed to change the value of the state variable.
+
+      When the setter function fires (i.e. data in the state variable changes), the component
+      automatically re-renders.
+  */
+  const [todoText, setTodoText] = useState("")
+
   const onTodoTextChange = (event) => {
+    // Call the state variable's setter with a new value to write to that variable.
+    setTodoText(event.target.value)
     console.log(event.target.value)
   }
 
@@ -36,6 +50,7 @@ export default function TodoList() {
                   variant="standard"
                   sx={{ width: '100%' }}
                   onChange={onTodoTextChange}
+                  value={todoText}
               />
           </Grid>
 
@@ -45,6 +60,8 @@ export default function TodoList() {
               onClick={onAddTodoClick}
             >Add Todo</Button>
           </Grid>
+
+          Our todo text is: {todoText}
 
     </Grid>
   </Box>
