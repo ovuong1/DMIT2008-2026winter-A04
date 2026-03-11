@@ -36,6 +36,10 @@ export default function Home() {
 
   const [reviews, setReviews] = useState([])
 
+  const [title, setTitle]       = useState("")
+  const [comments, setComments] = useState("")
+  const [rating, setRating]     = useState(0)
+
   const loadAllReviews = () => {
     // I'm demonstrating 'bad practice' in the interest of concision;
     // ideally, API functions would be in a separate layer from rendering.
@@ -46,6 +50,12 @@ export default function Home() {
         // console.log(data)
         setReviews(data)
       })
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log('submitted:')
+    console.log(`title: ${title}, comments: ${comments}, rating: ${rating}`)
   }
 
   return (
@@ -67,7 +77,9 @@ export default function Home() {
 
         <Container maxWidth="md">
 
-          <form>
+          <form
+            onSubmit={handleSubmit}
+          >
 
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12}>
@@ -77,6 +89,8 @@ export default function Home() {
                   label="Adaptation Title"
                   fullWidth
                   variant="standard"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
                 />
               </Grid>
 
@@ -87,6 +101,8 @@ export default function Home() {
                   label="Comments"
                   fullWidth
                   variant="standard"
+                  value={comments}
+                  onChange={(e) => setComments(e.target.value)}
                 />
               </Grid>
 
@@ -97,6 +113,8 @@ export default function Home() {
                     row
                     aria-labelledby="adaptation-rating"
                     name="rating-buttons-group"
+                    value={rating}
+                    onChange={(e) => setRating(e.target.value)}
                   >
                     <FormControlLabel value="1" control={<Radio />} label="1" />
                     <FormControlLabel value="2" control={<Radio />} label="2" />
