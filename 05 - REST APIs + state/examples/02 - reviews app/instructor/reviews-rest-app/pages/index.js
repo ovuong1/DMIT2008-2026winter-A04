@@ -1,15 +1,15 @@
+// React hooks
+import { useState } from 'react';
+
+// nextjs components
 import Head from 'next/head'
 import Image from 'next/image'
 
+
+// MUI components
 import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
 
 import Container from '@mui/material/Container';
 
@@ -22,19 +22,66 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 
-
 import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
+// our own components
+import ReviewCard from './components/ReviewCard';
 
 
 export default function Home() {
-  const MOCK_ADAPTATION_RATING = [{
-    'title': 'Fight Club',
-    'comment': 'Great movie and book',
-    'rating': 10
-  }]
+
+  const API_BASE_URL = 'http://localhost:5000'
+
+  const [reviews, setReviews] = useState([])
+
+  const [title, setTitle]       = useState("")
+  const [comments, setComments] = useState("")
+  const [rating, setRating]     = useState(0)
+
+  const loadAllReviews = () => {
+    // I'm demonstrating 'bad practice' in the interest of concision;
+    // ideally, API functions would be in a separate layer from rendering.
+    fetch(`${API_BASE_URL}/reviews`)
+      .then((response) => {
+        return response.json()
+      }).then((data) => {
+        // console.log(data)
+        setReviews(data)
+      })
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Again, normally I'd separate out API functions, but c'est la
+    fetch(`${API_BASE_URL}/reviews`, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        // I only need to use key: value syntax if my variable name differs from API datafield
+        title,
+        comment: comments,  // API datafield: my variable name
+        rating
+      })
+    }).then((response) => {
+      return response.json()
+    }).then((newReview) => {
+      // The API response body is giving me an object of what I just posted
+      // (prevents us double-hitting the API -> GET right after we POST);
+      // -> so I want to add what I just made to my stateful array and re-render.
+
+      // Remember, stateful variables are immutable, so I need to reconstruct the entire
+      // array and then overwrite the value.
+      setReviews([newReview, ...reviews]) // new thing first so it shows at the top of the list.
+    })
+
+    console.log('submitted:')
+    console.log(`title: ${title}, comments: ${comments}, rating: ${rating}`)
+  }
+
   return (
     <div>
       <Head>
@@ -49,9 +96,15 @@ export default function Home() {
           </Typography>
         </Toolbar>
       </AppBar>
+
       <main>
+
         <Container maxWidth="md">
-          <form>
+
+          <form
+            onSubmit={handleSubmit}
+          >
+
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12}>
                 <TextField
@@ -60,8 +113,11 @@ export default function Home() {
                   label="Adaptation Title"
                   fullWidth
                   variant="standard"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
                 />
               </Grid>
+
               <Grid item xs={12} sm={12}>
                 <TextField
                   id="review-comments"
@@ -69,8 +125,11 @@ export default function Home() {
                   label="Comments"
                   fullWidth
                   variant="standard"
+                  value={comments}
+                  onChange={(e) => setComments(e.target.value)}
                 />
               </Grid>
+
               <Grid item xs={12} sm={12}>
                 <FormControl>
                   <FormLabel id="adaptation-rating">Rating</FormLabel>
@@ -78,6 +137,8 @@ export default function Home() {
                     row
                     aria-labelledby="adaptation-rating"
                     name="rating-buttons-group"
+                    value={rating}
+                    onChange={(e) => setRating(e.target.value)}
                   >
                     <FormControlLabel value="1" control={<Radio />} label="1" />
                     <FormControlLabel value="2" control={<Radio />} label="2" />
@@ -92,6 +153,7 @@ export default function Home() {
                   </RadioGroup>
                </FormControl>
               </Grid>
+
               <Grid item xs={12} sm={12}>
                 <Button
                   variant="contained"
@@ -100,8 +162,11 @@ export default function Home() {
                   Add New Review
                 </Button>
               </Grid>
+
             </Grid>
+
           </form>
+
           <Box
             sx={{
               pt: 2,
@@ -110,32 +175,19 @@ export default function Home() {
           >
             <Button
               variant="contained"
+              onClick={loadAllReviews}
             >
               Load All Current Reviews
             </Button>
           </Box>
-          {MOCK_ADAPTATION_RATING.map((adaptation, index)=> {
-            return <Card key={index}>
-              <CardHeader
-                avatar={
-                  <Avatar sx={{ bgcolor: 'blue' }} aria-label="recipe">
-                    {adaptation.rating}
-                  </Avatar>
-                }
-                
-                title={
-                  <Typography variant="body2" color="text.secondary">
-                    {adaptation.title}
-                  </Typography>
-                }
-                
-              />
-              <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                  {adaptation.comment}
-                </Typography>
-              </CardContent>
-            </Card>
+
+          {reviews.map((adaptation, index) => {
+            return <ReviewCard
+              key={index}
+              rating={adaptation.rating}
+              title={adaptation.title}
+              comment={adaptation.comment}
+            />
           })}
 
         </Container>
