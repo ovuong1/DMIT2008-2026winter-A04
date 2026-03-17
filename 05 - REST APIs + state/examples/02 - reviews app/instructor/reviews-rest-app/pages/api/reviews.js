@@ -19,6 +19,26 @@ export const getReviews = () => {
   })
 }
 
-export const addReview = () => {
-	// function to post a review
+export const addReview = ({ title, comment, rating }) => {
+  return fetch(`${BASE_URL}/reviews`, {
+    method: "POST", // here, I *need* to specify POST
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      title,
+      comment,
+      rating
+    })
+  }).then((response) => {
+    return response.json()
+  }).then((data) => {
+    // The API response body is giving me an object of what I just posted
+    // (prevents us double-hitting the API -> GET right after we POST);
+    // -> so I want to add what I just made to my stateful array and re-render.
+
+    // Remember, stateful variables are immutable, so I need to reconstruct the entire
+    // array and then overwrite the value.}
+    return Promise.resolve(data)
+  })
 }
