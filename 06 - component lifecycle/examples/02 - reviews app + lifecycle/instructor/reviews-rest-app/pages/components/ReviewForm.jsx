@@ -1,5 +1,5 @@
 // react hooks
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // API functions
 //  . -> current directory
@@ -68,6 +68,13 @@ export default function ReviewForm({ reviews, onReviewsChange }) {
     setComments("");
     setRating(0);
   }
+
+  useEffect(
+  	// param 1: callback function (what logic should fire when effect runs)
+  	() => { loadAllReviews(); },
+  	//param 2: dependency array (empty array -> runs when component mounts, 'on load')
+  	[]
+  )
 
 	return (
 		<>
