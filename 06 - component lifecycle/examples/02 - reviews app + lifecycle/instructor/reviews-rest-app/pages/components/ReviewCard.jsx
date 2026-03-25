@@ -50,11 +50,17 @@ export default function ReviewCard({ review, reviews, onReviewsChange }) {
       }
     )
     
-    // in this step, we're not worried about safety, just demoing
-    // functionality. next step, we'll look at resolving decoupling issues
-    // between front-end state & backend data (e.g. if API delete fails)
-    onReviewsChange(filteredReviews);
-    deleteReview(reviewId);
+    try {
+      // let's say I want safety here. What if I delete from UI, but API delete fails?
+      // one rudimentary thing I can do is put the thing I expect to fail first.
+      deleteReview(reviewId);
+      onReviewsChange(filteredReviews);  // this is placed after, 
+                                         // so that if the fetch errors, it won't run
+    } catch (e) {
+      const msg = `Error deleting Review ${reviewId}: ${e.message} `
+      console.log(msg)
+      alert(msg)
+    }
   }
   
   return (
