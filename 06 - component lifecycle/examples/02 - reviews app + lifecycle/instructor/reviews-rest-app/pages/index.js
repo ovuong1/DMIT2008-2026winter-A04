@@ -19,6 +19,7 @@ import ReviewForm from './components/ReviewForm'
 
 export default function Home() {
 
+  // This is now shared state between ReviewForm and ReviewCard; both components read/write to it
   const [reviews, setReviews] = useState([])
 
   return (
@@ -53,9 +54,9 @@ export default function Home() {
           {reviews.map((adaptation, index) => {
             return <ReviewCard
               key={index}
-              rating={adaptation.rating}
-              title={adaptation.title}
-              comment={adaptation.comment}
+              review={adaptation}
+              reviews={reviews}
+              onReviewsChange={setReviews}
             />
           })}
 
