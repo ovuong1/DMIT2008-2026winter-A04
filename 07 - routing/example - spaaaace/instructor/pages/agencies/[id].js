@@ -1,3 +1,6 @@
+// nextjs routing
+import { useRouter } from 'next/router';
+
 // mui components
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
@@ -10,6 +13,10 @@ import SimpleDetailsCard from '@components/SimpleDetailsCard'
 
 
 export default function Agency() {
+
+  const router = useRouter()
+  const { id } = router.query // good ol' destructuring
+
   return (
     <>
       
@@ -23,7 +30,7 @@ export default function Agency() {
 
           <Grid item xs="10">
             <Typography variant="h3" gutterBottom>
-              Agency Page
+              Agency Page for {id}
             </Typography>
           </Grid>
 
