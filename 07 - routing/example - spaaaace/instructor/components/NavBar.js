@@ -11,17 +11,17 @@ export default function NavBar(props) {
   return <AppBar position="static">
     <Toolbar>
 
-      <Link href="/">
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Link href="/">
             Space Agency App
+          </Link>
         </Typography>
-      </Link>
 
-      <Link href="/about">
         <Typography variant="h6" component="div" >
-          About
+          <Link href="/about">
+            About
+          </Link>
         </Typography>
-      </Link>
 
     </Toolbar>
   </AppBar>
